@@ -9,12 +9,15 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+app.UseSwagger(options =>
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+    options.RouteTemplate = "api-docs/{documentName}/swagger.json";
+});
+
+app.UseSwaggerUI(options =>
+{
+    options.RoutePrefix = "api-docs";
+});
 
 app.UseHttpsRedirection();
 
