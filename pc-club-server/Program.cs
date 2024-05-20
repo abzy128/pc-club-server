@@ -11,12 +11,12 @@ var app = builder.Build();
 
 app.UseSwagger(options =>
 {
-    options.RouteTemplate = "api-docs/{documentName}/swagger.json";
+    options.RouteTemplate = "swagger/{documentName}/swagger.json";
 });
 
 app.UseSwaggerUI(options =>
 {
-    options.RoutePrefix = "api-docs";
+    options.RoutePrefix = "swagger";
 });
 
 app.UseHttpsRedirection();
