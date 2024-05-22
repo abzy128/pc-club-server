@@ -6,5 +6,6 @@ namespace pc_club_server.Services.UserService
     {
         UserDto? GetUser(string? username);
         bool IsAuthenticated(string? password, string? passwordHash);
+        UserDto? RegisterUser(UserInfo user);
     }
 }

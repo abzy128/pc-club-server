@@ -22,9 +22,7 @@ namespace pc_club_server.Services.JwtService
                 Subject = new ClaimsIdentity(new Claim[]
                 {
                     new(ClaimTypes.Name, userDto.Username),
-                    new(ClaimTypes.NameIdentifier, userDto.Id.ToString()),
-                    new(ClaimTypes.Email, userDto.Email),
-                    new(ClaimTypes.MobilePhone, userDto.PhoneNumber)
+                    new(ClaimTypes.NameIdentifier, userDto.Id.ToString())
                 }),
                 Expires = DateTime.UtcNow.AddHours(1),
                 Issuer = _options.Issuer,

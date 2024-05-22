@@ -2,7 +2,7 @@
 
 namespace pc_club_server.API.Models
 {
-    public class UserDto :User
+    public class UserDto : User
     {
     }
 }

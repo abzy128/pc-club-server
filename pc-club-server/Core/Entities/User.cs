@@ -13,10 +13,10 @@ namespace pc_club_server.Core.Entities
         [MaxLength(256)]
         public required string Password { get; set; }
         [MaxLength(256)]
-        public required string Email { get; set; }
+        public string? Email { get; set; }
         [MaxLength(15)]
-        public required string PhoneNumber { get; set; }
+        public string? PhoneNumber { get; set; }
         [MaxLength(32)]
-        public required string SteamID { get; set; }
+        public string? SteamID { get; set; }
     }
 }

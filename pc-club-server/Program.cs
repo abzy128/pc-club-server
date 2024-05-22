@@ -1,8 +1,11 @@
+using AutoMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using pc_club_server.Core.Options;
 using pc_club_server.Infrastructure.Database;
+using pc_club_server.Infrastructure.Mapping;
 using pc_club_server.Services.JwtService;
 using pc_club_server.Services.UserService;
 using Serilog;
@@ -44,13 +47,29 @@ builder.Services.AddAuthentication(options =>
 });
 builder.Services.AddAuthorization();
 
+var mapperConfig = new MapperConfiguration(cfg =>
+{
+    cfg.AddProfile<Mappings>();
+});
+builder.Services.AddSingleton(mapperConfig.CreateMapper());
+
 builder.Services.AddTransient<IJwtService, JwtService>();
 builder.Services.AddTransient<IUserService, UserService>();
 
 builder.Services.AddControllers();
 
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(options =>
+{
+    options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        Description = "JWT Authorization header using the Bearer scheme.",
+        Name = "Authorization",
+        In = ParameterLocation.Header,
+        Type = SecuritySchemeType.ApiKey,
+        Scheme = "Bearer"
+    });
+});
 
 var app = builder.Build();
 
