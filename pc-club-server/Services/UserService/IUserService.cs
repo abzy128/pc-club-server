@@ -4,8 +4,10 @@ namespace pc_club_server.Services.UserService
 {
     public interface IUserService
     {
-        UserDto? GetUser(string? username);
+        Task<UserDto?> GetUser(string? username);
         bool IsAuthenticated(string? password, string? passwordHash);
-        UserDto? RegisterUser(UserInfo user);
+        Task<UserDto?> RegisterUser(UserInfo user);
+        Task<UserDto?> UpdateUser(UserDto user);
+        Task<bool> UpdatePassword(int userId, string password);
     }
 }

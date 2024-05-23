@@ -1,5 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace pc_club_server.Core.Entities
 {
@@ -11,6 +13,8 @@ namespace pc_club_server.Core.Entities
         [MaxLength(64)]
         public required string Username { get; set; }
         [MaxLength(256)]
+        [Browsable(false)]
+        [JsonIgnore]
         public required string Password { get; set; }
         [MaxLength(256)]
         public string? Email { get; set; }

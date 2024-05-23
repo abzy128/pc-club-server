@@ -4,27 +4,27 @@ using pc_club_server.API.Models;
 using pc_club_server.Infrastructure.Database;
 using pc_club_server.Services.JwtService;
 using pc_club_server.Services.UserService;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace pc_club_server.API.Controllers
 {
     [ApiController]
     [Route("api/auth")]
     [AllowAnonymous]
-    public class AuthController(
-        PcClubDbContext context,
-        ILogger<AuthController> logger) : ControllerBase
+    [SwaggerTag("Authentication")]
+    public class AuthController : ControllerBase
     {
-        private readonly PcClubDbContext _context = context;
-        private readonly ILogger<AuthController> _logger = logger;
-        
         [HttpPost]
         [Route("login")]
-        public IActionResult GetToken(
+        [SwaggerOperation(
+            Summary = "Get JWT token",
+            Description = "Get JWT")]
+        public async Task<IActionResult> GetToken(
             [FromQuery] UserInfo requestUser,
             [FromServices] IUserService userService,
             [FromServices] IJwtService jwtService)
         {
-            var user = userService.GetUser(requestUser.Username);
+            var user = await userService.GetUser(requestUser.Username);
             if (user == null)
                 return Unauthorized();
 
@@ -37,12 +37,15 @@ namespace pc_club_server.API.Controllers
 
         [HttpPost]
         [Route("register")]
-        public IActionResult RegisterUser(
+        [SwaggerOperation(
+            Summary = "Register new user",
+            Description = "Register new user")]
+        public async Task<IActionResult> RegisterUser(
             [FromQuery] UserInfo requestUser,
             [FromServices] IUserService userService,
             [FromServices] IJwtService jwtService)
         {
-            var user = userService.RegisterUser(requestUser);
+            var user = await userService.RegisterUser(requestUser);
             if (user == null)
                 return BadRequest();
 

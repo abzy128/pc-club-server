@@ -1,19 +1,56 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using pc_club_server.API.Models;
 using pc_club_server.Services.UserService;
+using Swashbuckle.AspNetCore.Annotations;
+using System.Security.Claims;
 
 namespace pc_club_server.API.Controllers
 {
     [ApiController]
-    [Route("api/profile")]
+    [Route("api/user")]
     [Authorize]
     public class ProfileConroller : ControllerBase
     {
         [HttpGet]
-        public IActionResult GetProfile(
+        [SwaggerOperation(
+           Summary = "Get current user info",
+           Description = "Get current user info")]
+        public async Task<IActionResult> GetUser(
             [FromServices] IUserService userService)
         {
-            return Ok();
+            return Ok(await userService.GetUser(User.Identity!.Name));
+        }
+        
+        [HttpPost]
+        [SwaggerOperation(
+           Summary = "Update user info",
+           Description = "Update user info")]
+        public async Task<IActionResult> UpdateUser(
+            [FromQuery] UserDto user,
+            [FromServices] IUserService userService)
+        {
+            if (user.Id != GetUserIdentifier())
+                return Forbid();
+
+            return Ok(await userService.UpdateUser(user));
+        }
+        
+        [HttpPost("update-password")]
+        [SwaggerOperation(
+          Summary = "Update user password",
+          Description = "Update user password")]
+        public async Task<IActionResult> UpdatePassword(
+            [FromQuery] string password,
+            [FromServices] IUserService userService)
+        {
+            return Ok(await userService.UpdatePassword(GetUserIdentifier(), password));
+        }
+        private int GetUserIdentifier()
+        {
+            var claimsIdentity = User.Identity as ClaimsIdentity;
+            var claim = claimsIdentity!.FindFirst(ClaimTypes.NameIdentifier);
+            return int.Parse(claim!.Value);
         }
     }
 }

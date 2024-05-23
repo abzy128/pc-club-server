@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using pc_club_server.API.Models;
 using pc_club_server.Infrastructure.Database;
 
@@ -13,10 +14,10 @@ namespace pc_club_server.Services.UserService
         private readonly ILogger<UserService> _logger = logger;
         private readonly IMapper _mapper = mapper;
 
-        public UserDto? GetUser(string? username)
+        public async Task<UserDto?> GetUser(string? username)
         {
             ArgumentNullException.ThrowIfNull(username);
-            var dbUser = _context.Users.Where(x => x.Username == username).FirstOrDefault();
+            var dbUser = await _context.Users.Where(x => x.Username == username).FirstOrDefaultAsync();
             return _mapper.Map<UserDto>(dbUser);
         }
 
@@ -27,7 +28,7 @@ namespace pc_club_server.Services.UserService
 
             return BCrypt.Net.BCrypt.Verify(password, passwordHash);
         }
-        public UserDto? RegisterUser(UserInfo user)
+        public async Task<UserDto?> RegisterUser(UserInfo user)
         {
             ArgumentNullException.ThrowIfNull(user);
 
@@ -42,9 +43,38 @@ namespace pc_club_server.Services.UserService
             };
 
             _context.Users.Add(newUser);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
 
             return newUser;
+        }
+
+        public async Task<UserDto?> UpdateUser(UserDto user)
+        {
+            ArgumentNullException.ThrowIfNull(user);
+
+            var dbUser = _context.Users.Where(x => x.Username == user.Username).FirstOrDefault();
+            if (dbUser == null)
+                return null;
+
+            dbUser.Email = user.Email;
+            dbUser.PhoneNumber = user.PhoneNumber;
+            dbUser.SteamID = user.SteamID;
+
+            await _context.SaveChangesAsync();
+            return _mapper.Map<UserDto>(dbUser);
+        }
+
+        public async Task<bool> UpdatePassword(int userId, string password)
+        {
+            ArgumentNullException.ThrowIfNull(password);
+
+            var dbUser = _context.Users.Where(x => x.Id == userId).FirstOrDefault();
+            if (dbUser == null)
+                return false;
+
+            dbUser.Password = BCrypt.Net.BCrypt.HashPassword(password);
+            await _context.SaveChangesAsync();
+            return true;
         }
     }
 
