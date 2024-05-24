@@ -13,6 +13,17 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(builder =>
+    {
+        builder
+            .AllowAnyOrigin()
+            .AllowAnyHeader()
+            .AllowAnyMethod();
+    });
+});
+
 var jwtOptionsSection = builder.Configuration.GetSection("Jwt");
 builder.Services.Configure<JwtOptions>(jwtOptionsSection);
 
