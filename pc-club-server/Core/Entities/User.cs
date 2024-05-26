@@ -13,7 +13,6 @@ namespace pc_club_server.Core.Entities
         [MaxLength(64)]
         public required string Username { get; set; }
         [MaxLength(256)]
-        [Browsable(false)]
         [JsonIgnore]
         public required string Password { get; set; }
         [MaxLength(256)]
