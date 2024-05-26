@@ -7,6 +7,7 @@ using pc_club_server.Core.Options;
 using pc_club_server.Infrastructure.Database;
 using pc_club_server.Infrastructure.Mapping;
 using pc_club_server.Services.JwtService;
+using pc_club_server.Services.PlayerSessionService;
 using pc_club_server.Services.SteamService;
 using pc_club_server.Services.UserService;
 using Serilog;
@@ -68,6 +69,7 @@ builder.Services.AddSingleton(mapperConfig.CreateMapper());
 builder.Services.AddTransient<IJwtService, JwtService>();
 builder.Services.AddTransient<IUserService, UserService>();
 builder.Services.AddTransient<ISteamService, SteamService>();
+builder.Services.AddTransient<IPlaySessionService, PlaySessionService>();
 
 builder.Services.AddControllers();
 
@@ -101,6 +103,8 @@ builder.Services.AddSwaggerGen(options =>
 });
 
 var app = builder.Build();
+
+app.UseCors();
 
 app.UseSerilogRequestLogging();
 
