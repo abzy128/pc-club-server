@@ -7,6 +7,7 @@ namespace pc_club_server.Infrastructure.Mapping
         public Mappings()
         {
             CreateMap<Core.Entities.User, API.Models.UserDto>();
+            CreateMap<API.Models.UserUpdateDto, API.Models.UserDto>();
         }
     }
 }

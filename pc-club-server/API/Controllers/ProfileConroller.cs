@@ -27,13 +27,10 @@ namespace pc_club_server.API.Controllers
            Summary = "Update user info",
            Description = "Update user info")]
         public async Task<IActionResult> UpdateUser(
-            [FromQuery] UserDto user,
+            [FromQuery] UserUpdateDto user,
             [FromServices] IUserService userService)
         {
-            if (user.Id != GetUserIdentifier())
-                return Forbid();
-
-            return Ok(await userService.UpdateUser(user));
+            return Ok(await userService.UpdateUser(GetUserIdentifier(), user));
         }
         
         [HttpPost("update-password")]

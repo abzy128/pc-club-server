@@ -48,11 +48,11 @@ namespace pc_club_server.Services.UserService
             return newUser;
         }
 
-        public async Task<UserDto?> UpdateUser(UserDto user)
+        public async Task<UserDto?> UpdateUser(int id, UserUpdateDto user)
         {
             ArgumentNullException.ThrowIfNull(user);
 
-            var dbUser = _context.Users.Where(x => x.Username == user.Username).FirstOrDefault();
+            var dbUser = _context.Users.Where(x => x.Id == id).FirstOrDefault();
             if (dbUser == null)
                 return null;
 
