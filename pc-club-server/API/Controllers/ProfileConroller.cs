@@ -10,6 +10,7 @@ namespace pc_club_server.API.Controllers
     [ApiController]
     [Route("api/user")]
     [Authorize]
+    [SwaggerTag("User profile")]
     public class ProfileConroller : ControllerBase
     {
         [HttpGet]
