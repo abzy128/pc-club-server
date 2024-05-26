@@ -14,7 +14,7 @@ namespace pc_club_server.Core.Entities
         public required string Username { get; set; }
         [MaxLength(256)]
         [JsonIgnore]
-        public required string Password { get; set; }
+        public string Password { get; set; } = string.Empty;
         [MaxLength(256)]
         public string? Email { get; set; }
         [MaxLength(15)]
