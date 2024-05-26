@@ -8,8 +8,6 @@ namespace pc_club_server.Infrastructure.Database
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             base.OnConfiguring(optionsBuilder);
-            Database.EnsureCreated();
-            Database.Migrate();
         }
         public DbSet<User> Users { get; set; }
     }
