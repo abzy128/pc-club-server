@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using pc_club_server.API.Models;
+using pc_club_server.Core;
 using pc_club_server.Services.UserService;
 using Swashbuckle.AspNetCore.Annotations;
-using System.Security.Claims;
 
 namespace pc_club_server.API.Controllers
 {
@@ -19,7 +19,7 @@ namespace pc_club_server.API.Controllers
         public async Task<IActionResult> GetUser(
             [FromServices] IUserService userService)
         {
-            return Ok(await userService.GetUser(User.Identity!.Name));
+            return Ok(await userService.GetUser(User.GetID()));
         }
         
         [HttpPost]
@@ -30,7 +30,7 @@ namespace pc_club_server.API.Controllers
             [FromQuery] UserUpdateDto user,
             [FromServices] IUserService userService)
         {
-            return Ok(await userService.UpdateUser(GetUserIdentifier(), user));
+            return Ok(await userService.UpdateUser(User.GetID(), user));
         }
         
         [HttpPost("update-password")]
@@ -41,13 +41,7 @@ namespace pc_club_server.API.Controllers
             [FromQuery] string password,
             [FromServices] IUserService userService)
         {
-            return Ok(await userService.UpdatePassword(GetUserIdentifier(), password));
-        }
-        private int GetUserIdentifier()
-        {
-            var claimsIdentity = User.Identity as ClaimsIdentity;
-            var claim = claimsIdentity!.FindFirst(ClaimTypes.NameIdentifier);
-            return int.Parse(claim!.Value);
+            return Ok(await userService.UpdatePassword(User.GetID(), password));
         }
     }
 }

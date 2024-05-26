@@ -14,6 +14,13 @@ namespace pc_club_server.Services.UserService
         private readonly ILogger<UserService> _logger = logger;
         private readonly IMapper _mapper = mapper;
 
+        public async Task<UserDto?> GetUser(long id)
+        {
+            if(id <= 0)
+                return null;
+            var dbUser = await _context.Users.FindAsync(id);
+            return _mapper.Map<UserDto>(dbUser);
+        }
         public async Task<UserDto?> GetUser(string? username)
         {
             ArgumentNullException.ThrowIfNull(username);

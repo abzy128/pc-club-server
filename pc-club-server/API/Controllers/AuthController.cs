@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using pc_club_server.API.Models;
-using pc_club_server.Infrastructure.Database;
 using pc_club_server.Services.JwtService;
 using pc_club_server.Services.UserService;
 using Swashbuckle.AspNetCore.Annotations;
