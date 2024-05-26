@@ -21,5 +21,6 @@ namespace pc_club_server.Core.Entities
         public string? PhoneNumber { get; set; }
         [MaxLength(32)]
         public string? SteamID { get; set; }
+        public IEnumerable<PlaySession> PlaySessions { get; set; } = [];
     }
 }

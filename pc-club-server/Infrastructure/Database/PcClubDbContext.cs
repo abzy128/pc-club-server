@@ -10,5 +10,6 @@ namespace pc_club_server.Infrastructure.Database
             base.OnConfiguring(optionsBuilder);
         }
         public DbSet<User> Users { get; set; }
+        public DbSet<PlaySession> PlaySessions { get; set; }
     }
 }
