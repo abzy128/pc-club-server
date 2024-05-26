@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 using pc_club_server.API.Models;
 using pc_club_server.Infrastructure.Database;
 using pc_club_server.Services.JwtService;
@@ -24,6 +25,8 @@ namespace pc_club_server.API.Controllers
             [FromServices] IUserService userService,
             [FromServices] IJwtService jwtService)
         {
+            if (requestUser.Username.IsNullOrEmpty() || requestUser.Password.IsNullOrEmpty())
+                return BadRequest();
             var user = await userService.GetUser(requestUser.Username);
             if (user == null)
                 return Unauthorized();
@@ -45,6 +48,8 @@ namespace pc_club_server.API.Controllers
             [FromServices] IUserService userService,
             [FromServices] IJwtService jwtService)
         {
+            if (requestUser.Username.IsNullOrEmpty() || requestUser.Password.IsNullOrEmpty())
+                return BadRequest();
             var user = await userService.RegisterUser(requestUser);
             if (user == null)
                 return BadRequest();
