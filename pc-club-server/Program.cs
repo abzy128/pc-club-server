@@ -11,6 +11,7 @@ using pc_club_server.Services.PlayerSessionService;
 using pc_club_server.Services.SteamService;
 using pc_club_server.Services.UserService;
 using Serilog;
+using Serilog.Events;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -76,6 +77,12 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
 {
+    options.SwaggerDoc("v1", new OpenApiInfo 
+        { 
+            Title = "PC Club API", 
+            Version = Environment.Version.ToString(),
+        }
+    );
     options.AddSecurityDefinition(JwtBearerDefaults.AuthenticationScheme, new OpenApiSecurityScheme
     {
         In = ParameterLocation.Header,

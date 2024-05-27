@@ -19,19 +19,21 @@ namespace pc_club_server.API.Controllers
         [SwaggerOperation(
             Summary = "Get JWT token",
             Description = "Get JWT")]
-        [SwaggerResponse(200, "OK")]
-        [SwaggerResponse(400, "Bad request")]
-        [SwaggerResponse(401, "Unauthorized")]
-        public async Task<IActionResult> Login(
+        [SwaggerResponse(200, "Login successful")]
+        [SwaggerResponse(400, "Fields can not be empty")]
+        [SwaggerResponse(401, "Incorrect password")]
+        [SwaggerResponse(404, "User not found")]
+        public async Task<ActionResult<string>> Login(
             [FromQuery] UserInfo requestUser,
             [FromServices] IUserService userService,
             [FromServices] IJwtService jwtService)
         {
             if (requestUser.Username.IsNullOrEmpty() || requestUser.Password.IsNullOrEmpty())
                 return BadRequest();
+            
             var user = await userService.GetUser(requestUser.Username);
             if (user == null)
-                return Unauthorized();
+                return NotFound();
 
             if (!userService.IsAuthenticated(requestUser.Password, user.Password))
                 return Unauthorized();
@@ -49,7 +51,7 @@ namespace pc_club_server.API.Controllers
         [SwaggerResponse(201, "Registraion successful")]
         [SwaggerResponse(400, "Bad request")]
         [SwaggerResponse(409, "User already exists")]
-        public async Task<IActionResult> RegisterUser(
+        public async Task<ActionResult<string>> RegisterUser(
             [FromQuery] UserInfo requestUser,
             [FromServices] IUserService userService,
             [FromServices] IJwtService jwtService)

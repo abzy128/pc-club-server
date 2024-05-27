@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using pc_club_server.API.Models;
 using pc_club_server.Core;
 using pc_club_server.Services.PlayerSessionService;
 using Swashbuckle.AspNetCore.Annotations;
@@ -16,7 +17,7 @@ namespace pc_club_server.API.Controllers
         [SwaggerOperation(
             Summary = "Start play session",
             Description = "Start play session")]
-        public async Task<IActionResult> StartPlaySession(
+        public async Task<ActionResult<PlaySessionDto>> StartPlaySession(
             [FromQuery]
             [SwaggerParameter(
                 Description = "Time when session ends. Send local time, without timezone. Example: 2024-05-24T21:00:00",
@@ -37,7 +38,7 @@ namespace pc_club_server.API.Controllers
         [SwaggerOperation(
             Summary = "End play session",
             Description = "End play session")]
-        public async Task<IActionResult> EndPlaySession(
+        public async Task<ActionResult<PlaySessionDto>> EndPlaySession(
             [FromServices] IPlaySessionService playSessionService)
         {
             return Ok(await playSessionService.EndPlaySession(User.GetID()));
@@ -47,7 +48,7 @@ namespace pc_club_server.API.Controllers
         [SwaggerOperation(
             Summary = "Get current play session",
             Description = "Get current play session")]
-        public async Task<IActionResult> GetPlaySession(
+        public async Task<ActionResult<PlaySessionDto>> GetPlaySession(
             [FromServices] IPlaySessionService playSessionService)
         {
             var session = await playSessionService.GetPlaySession(User.GetID());

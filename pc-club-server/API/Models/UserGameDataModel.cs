@@ -7,9 +7,10 @@
     }
     public class GameDataModel
     {
-        public double AppID { get; set; }
+        public long AppID { get; set; }
         public string Name { get; set; } = string.Empty;
         public string Logo { get; set; } = string.Empty;
+        public string Banner { get; set; } = string.Empty;
         public string StoreLink { get; set; } = string.Empty;
         public double HoursLast2Weeks { get; set; }
         public double HoursOnRecord { get; set; }

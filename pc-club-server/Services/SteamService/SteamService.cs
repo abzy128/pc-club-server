@@ -6,7 +6,7 @@ namespace pc_club_server.Services.SteamService
     public class SteamService : ISteamService
     {
         
-        public string GetGameBannerURI(int gameID)
+        public string GetGameBannerURI(long gameID)
         {
             return $"https://steamcdn-a.akamaihd.net/steam/apps/{gameID}/library_600x900_2x.jpg";
         }
@@ -38,6 +38,7 @@ namespace pc_club_server.Services.SteamService
                     StatsLink = game.SelectSingleNode("statsLink")?.InnerText ?? string.Empty,
                     GlobalStatsLink = game.SelectSingleNode("globalStatsLink")?.InnerText ?? string.Empty
                 };
+                gameData.Banner = GetGameBannerURI(gameData.AppID);
                 gameDataList.Add(gameData);
             }
             var gameDataModel = new UserGameDataModel

@@ -17,7 +17,7 @@ namespace pc_club_server.API.Controllers
         [SwaggerOperation(
            Summary = "Get current user info",
            Description = "Get current user info")]
-        public async Task<IActionResult> GetUser(
+        public async Task<ActionResult<UserDto>> GetUser(
             [FromServices] IUserService userService)
         {
             return Ok(await userService.GetUser(User.GetID()));
@@ -27,7 +27,7 @@ namespace pc_club_server.API.Controllers
         [SwaggerOperation(
            Summary = "Update user info",
            Description = "Update user info")]
-        public async Task<IActionResult> UpdateUser(
+        public async Task<ActionResult<UserDto>> UpdateUser(
             [FromQuery] UserUpdateDto user,
             [FromServices] IUserService userService)
         {
@@ -38,11 +38,14 @@ namespace pc_club_server.API.Controllers
         [SwaggerOperation(
           Summary = "Update user password",
           Description = "Update user password")]
-        public async Task<IActionResult> UpdatePassword(
+        public async Task<ActionResult> UpdatePassword(
             [FromQuery] string password,
             [FromServices] IUserService userService)
         {
-            return Ok(await userService.UpdatePassword(User.GetID(), password));
+            var isUpdateSuccessful = await userService.UpdatePassword(User.GetID(), password);
+            if(!isUpdateSuccessful)
+                return BadRequest();
+            return Ok();
         }
     }
 }
