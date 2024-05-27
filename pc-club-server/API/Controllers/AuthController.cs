@@ -51,7 +51,7 @@ namespace pc_club_server.API.Controllers
                 return BadRequest();
             var user = await userService.RegisterUser(requestUser);
             if (user == null)
-                return BadRequest();
+                return Conflict();
 
             var token = jwtService.GenerateToken(user);
             return Ok(token);

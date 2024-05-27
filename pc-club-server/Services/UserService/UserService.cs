@@ -42,7 +42,7 @@ namespace pc_club_server.Services.UserService
             var dbUser = await GetUser(user.Username);
             if (dbUser != null)
                 return null;
-            var newUser = new UserDto
+            var newUser = new Core.Entities.User
             {
                 Id = 0,
                 Username = user.Username!,
@@ -52,7 +52,7 @@ namespace pc_club_server.Services.UserService
             _context.Users.Add(newUser);
             await _context.SaveChangesAsync();
 
-            return newUser;
+            return _mapper.Map<UserDto>(user);
         }
 
         public async Task<UserDto?> UpdateUser(int id, UserUpdateDto user)
