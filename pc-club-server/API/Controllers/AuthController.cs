@@ -19,7 +19,10 @@ namespace pc_club_server.API.Controllers
         [SwaggerOperation(
             Summary = "Get JWT token",
             Description = "Get JWT")]
-        public async Task<IActionResult> GetToken(
+        [SwaggerResponse(200, "OK")]
+        [SwaggerResponse(400, "Bad request")]
+        [SwaggerResponse(401, "Unauthorized")]
+        public async Task<IActionResult> Login(
             [FromQuery] UserInfo requestUser,
             [FromServices] IUserService userService,
             [FromServices] IJwtService jwtService)
@@ -42,6 +45,10 @@ namespace pc_club_server.API.Controllers
         [SwaggerOperation(
             Summary = "Register new user",
             Description = "Register new user")]
+        [SwaggerResponse(200, "OK")]
+        [SwaggerResponse(201, "Registraion successful")]
+        [SwaggerResponse(400, "Bad request")]
+        [SwaggerResponse(409, "User already exists")]
         public async Task<IActionResult> RegisterUser(
             [FromQuery] UserInfo requestUser,
             [FromServices] IUserService userService,
@@ -54,7 +61,7 @@ namespace pc_club_server.API.Controllers
                 return Conflict("User already exists");
 
             var token = jwtService.GenerateToken(user);
-            return Ok(token);
+            return CreatedAtAction(nameof(Login), token);
         }
     }
 }
