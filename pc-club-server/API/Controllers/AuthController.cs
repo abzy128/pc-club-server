@@ -48,10 +48,10 @@ namespace pc_club_server.API.Controllers
             [FromServices] IJwtService jwtService)
         {
             if (requestUser.Username.IsNullOrEmpty() || requestUser.Password.IsNullOrEmpty())
-                return BadRequest();
+                return BadRequest("Check fields");
             var user = await userService.RegisterUser(requestUser);
             if (user == null)
-                return Conflict();
+                return Conflict("User already exists");
 
             var token = jwtService.GenerateToken(user);
             return Ok(token);

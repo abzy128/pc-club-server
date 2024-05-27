@@ -52,7 +52,7 @@ namespace pc_club_server.Services.UserService
             _context.Users.Add(newUser);
             await _context.SaveChangesAsync();
 
-            return _mapper.Map<UserDto>(user);
+            return _mapper.Map<UserDto>(newUser);
         }
 
         public async Task<UserDto?> UpdateUser(int id, UserUpdateDto user)
