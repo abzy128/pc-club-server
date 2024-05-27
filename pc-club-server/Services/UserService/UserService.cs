@@ -37,6 +37,7 @@ namespace pc_club_server.Services.UserService
         }
         public async Task<UserDto?> RegisterUser(UserInfo user)
         {
+            user = new UserInfo(user.Username!.Trim(), user.Password!.Trim());
             ArgumentNullException.ThrowIfNull(user);
 
             var dbUser = await GetUser(user.Username);
