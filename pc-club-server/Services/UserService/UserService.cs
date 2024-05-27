@@ -39,7 +39,7 @@ namespace pc_club_server.Services.UserService
         {
             user = new UserInfo(user.Username!.Trim(), user.Password!.Trim());
             ArgumentNullException.ThrowIfNull(user);
-
+            
             var dbUser = await GetUser(user.Username);
             if (dbUser != null)
                 return null;

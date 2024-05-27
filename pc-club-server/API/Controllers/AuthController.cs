@@ -55,7 +55,12 @@ namespace pc_club_server.API.Controllers
             [FromServices] IJwtService jwtService)
         {
             if (requestUser.Username.IsNullOrEmpty() || requestUser.Password.IsNullOrEmpty())
-                return BadRequest("Check fields");
+                return BadRequest("Fields can not be empty");
+            
+            requestUser = new UserInfo(requestUser.Username!.Trim(), requestUser.Password!.Trim());
+            if(requestUser.Username!.Contains(' ') || requestUser.Password!.Contains(' '))
+                return BadRequest("Username cannot contain spaces");
+            
             var user = await userService.RegisterUser(requestUser);
             if (user == null)
                 return Conflict("User already exists");
