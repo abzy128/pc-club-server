@@ -56,6 +56,9 @@ namespace pc_club_server.API.Controllers
         {
             if (requestUser.Username.IsNullOrEmpty() || requestUser.Password.IsNullOrEmpty())
                 return BadRequest("Check fields");
+            requestUser = new UserInfo(requestUser.Username!.Trim(), requestUser.Password!.Trim());
+            if(requestUser.Username!.Contains(' ') || requestUser.Password!.Contains(' '))
+                return BadRequest("Username cannot contain spaces");
             var user = await userService.RegisterUser(requestUser);
             if (user == null)
                 return Conflict("User already exists");
