@@ -33,7 +33,6 @@ namespace pc_club_server.API.Controllers
             return Ok(session);
         }
 
-        [Obsolete("Not implemented")]
         [HttpPost("end")]
         [SwaggerOperation(
             Summary = "End play session",
@@ -49,11 +48,17 @@ namespace pc_club_server.API.Controllers
             Summary = "Get current play session",
             Description = "Get current play session")]
         public async Task<ActionResult<PlaySessionDto>> GetPlaySession(
-            [FromServices] IPlaySessionService playSessionService)
+            [FromServices] IPlaySessionService playSessionService,
+            [FromQuery] bool localTime = false)
         {
             var session = await playSessionService.GetPlaySession(User.GetID());
             if (session == null)
                 return NotFound();
+            if (localTime)
+            {
+                session.StartTime = session.StartTime.ToLocalTime();
+                session.EndTime = session.EndTime.ToLocalTime();
+            }
             return Ok(session);
         }
     }

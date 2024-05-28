@@ -15,9 +15,16 @@ namespace pc_club_server.Services.PlayerSessionService
         private readonly ILogger<PlaySessionService> _logger = logger;
         private readonly IMapper _mapper = mapper;
 
-        public Task<PlaySessionDto> EndPlaySession(long userId)
+        public async Task<bool> EndPlaySession(long userId)
         {
-            throw new NotImplementedException();
+            var PlaySession = await GetPlaySession(userId);
+            if(PlaySession == null)
+                return false;
+
+            var dbPlaySession = await _context.PlaySessions.FindAsync(PlaySession.Id);
+            dbPlaySession!.EndTime = DateTime.UtcNow;
+            await _context.SaveChangesAsync();
+            return true;
         }
 
         public async Task<PlaySessionDto?> GetPlaySession(long userId)
