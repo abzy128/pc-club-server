@@ -9,7 +9,7 @@ namespace pc_club_server.Core.Entities
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public long Id { get; set; }
         public long UserId { get; set; }
-        public DateTime StartTime { get; set; } = DateTime.Now;
+        public DateTime StartTime { get; set; } = DateTime.UtcNow;
         public DateTime EndTime { get; set; }
         public User User { get; set; } = null!;
     }
